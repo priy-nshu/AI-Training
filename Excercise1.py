@@ -15,10 +15,10 @@ for x in range(2, OverOrUnder//2 + 1):
     elif x ** 2 > OverOrUnder :
         diff=min(x ** 2 - OverOrUnder, OverOrUnder - (x-1) ** 2)
         break
-if diff < (x ** 2 - OverOrUnder):
-    print(OverOrUnder, 'should be subtracted by', diff)
+if diff < (x ** 2 - OverOrUnder): # type: ignore
+    print(OverOrUnder, 'should be subtracted by', diff) # type: ignore
 else:
-    print(OverOrUnder, 'should be added by', diff)
+    print(OverOrUnder, 'should be added by', diff) # type: ignore
 
 count = 0
 for x in range(1, 1000):
