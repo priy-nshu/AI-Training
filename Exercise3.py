@@ -39,6 +39,6 @@ def highest_paid_employee():
 
     max_salary_index = np.argmax(employees['salary'])
     return employees[max_salary_index]
-/
+
 highest = highest_paid_employee()
 print("Highest paid employee:", highest)
