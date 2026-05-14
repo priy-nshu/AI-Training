@@ -42,15 +42,15 @@ accuracy_train_dt = accuracy_test_dt = 0.0
 accuracy_train_nb = accuracy_test_nb = 0.0
 accuracy_train_knn = accuracy_test_knn = 0.0
 
-print("LR")
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 x_train,x_test,y_train,y_test=train_test_split(X,Y,test_size=0.2,train_size=0.8,random_state=42,stratify=Y)
 print(x_train,x_test,y_train,y_test)
 
+
 def logistic_reg():
+    print("-------------------------------------LOGISTIC REG----------------------------------------------") 
     global accuracy_train_lr,accuracy_test_lr
 
     model_lr=LogisticRegression()
@@ -76,7 +76,10 @@ def logistic_reg():
     print(f"Test Result : {classification_report(result_test_lr, y_test)}")
 
 print("\nDecision tree\n")
+
+
 def decision_tree():
+    print("-------------------------------------DECISION TREE----------------------------------------------") 
     global accuracy_train_dt, accuracy_test_dt
 
     from sklearn.tree import DecisionTreeClassifier
@@ -93,14 +96,91 @@ def decision_tree():
     print(result_test_dt)
 
     accuracy_train_dt = accuracy_score(result_train_dt, y_train)
-    print(accuracy_train_dt)
-    print(classification_report(result_train_dt, y_train))
+    print(f"Training Accuracy Score:\n {accuracy_train_nb}")
+    print(f"Training Classification Report\n {classification_report(result_train_dt, y_train)}")
 
     accuracy_test_dt = accuracy_score(result_test_dt, y_test)
-    print(accuracy_test_dt)
-    print(classification_report(result_test_dt,y_test))
+    print(f"Training Accuracy Score:\n",accuracy_test_nb)
+    print(f'Testing Classification Report:\n',classification_report(result_test_dt, y_test))
 
-    
+
+ 
+def naive_bayes():
+    print("-------------------------------------NAIVE BAYES----------------------------------------------")
+    global accuracy_train_nb, accuracy_test_nb
+
+    from sklearn.naive_bayes import GaussianNB
+    from sklearn.metrics import accuracy_score, classification_report
+
+    model_nb = GaussianNB()
+    model_nb.fit(x_train, y_train)
+
+    result_train_nb = model_nb.predict(x_train)
+    result_test_nb = model_nb.predict(x_test)
+
+    accuracy_train_nb = accuracy_score(result_train_nb, y_train)
+    print(f"Training Accuracy Score:\n {accuracy_train_nb}")
+    print(f"Training Classification Report\n {classification_report(result_train_nb, y_train)}")
+
+    accuracy_test_nb = accuracy_score(result_test_nb, y_test)
+    print(f"Training Accuracy Score:\n",accuracy_test_nb)
+    print(f'Testing Classification Report:\n',classification_report(result_test_nb, y_test))
+
+
+def knn():
+    print("-------------------------------------KNN----------------------------------------------") 
+    global accuracy_train_knn, accuracy_test_knn
+
+    from sklearn.naive_bayes import GaussianNB
+    from sklearn.metrics import accuracy_score, classification_report
+
+    model_nb = GaussianNB()
+    model_nb.fit(x_train, y_train)
+
+    result_train_knn = model_nb.predict(x_train)
+    result_test_knn = model_nb.predict(x_test)
+
+    accuracy_train_knn = accuracy_score(result_train_knn, y_train)
+    print(f"Training Accuracy Score:\n {accuracy_train_knn}")
+    print(f"Training Classification Report\n {classification_report(result_train_knn, y_train)}")
+
+    accuracy_test_knn = accuracy_score(result_test_knn, y_test)
+    print(f"Training Accuracy Score:\n",accuracy_test_knn)
+    print(f'Testing Classification Report:\n',classification_report(result_test_knn, y_test))
+
+
+def comparison():
+    print("-------------------------------------COMPARISION----------------------------------------------")
+    data = {
+        "Model": ["Logistic Regression", "Decision Tree", "Naive Bayes", "k-NN"],
+
+        "Train Accuracy": [
+            accuracy_train_lr * 100,
+            accuracy_train_dt * 100,
+            accuracy_train_nb * 100,
+            accuracy_train_knn * 100
+        ],
+
+        "Test Accuracy": [
+            accuracy_test_lr * 100,
+            accuracy_test_dt * 100,
+            accuracy_test_nb * 100,
+            accuracy_test_knn * 100
+        ]
+    }
+
+    df_comparison = pd.DataFrame(data)
+
+    df_comparison["Overfit_Diff"] = (
+        df_comparison["Train Accuracy"] - df_comparison["Test Accuracy"]
+    )
+
+    df_final = df_comparison.set_index("Model").T
+    print(df_final)
+
 ####################################################################
 logistic_reg()
 decision_tree()
+naive_bayes()
+knn()
+comparison()
